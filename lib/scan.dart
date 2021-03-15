@@ -35,24 +35,20 @@ class _ScanState extends State<Scan> {
     });
   }
 
-  TextEditingController nom = new TextEditingController();
-  TextEditingController quantite = new TextEditingController();
-  TextEditingController prix = new TextEditingController();
-  String qrCodeResult = "";
-  String myvalue = "";
-
   //values object
   String price_value = "0";
   String quantity_value = "0";
   String name_value = "";
   bool _isLoading = false;
+  String qrCodeResult = "";
+  String myvalue = "";
 
   Future<List> senddata() async {
     var response = await http.post("bad-event.com/caisse/produit.php", body: {
       "idqrcode": qrCodeResult,
-      "nom": nom.text,
-      "quantite": quantite.text,
-      "prix": prix.text,
+      "nom": price_value,
+      "quantite": quantity_value,
+      "prix": name_value,
     });
     return json.decode(response.body);
   }
