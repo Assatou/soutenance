@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:barcode_scan/barcode_scan.dart';
+import 'package:caisse/components/utils/text_field_container.dart';
+import 'package:caisse/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
@@ -36,6 +38,13 @@ class _ScanState extends State<Scan> {
   TextEditingController quantite = new TextEditingController();
   TextEditingController prix = new TextEditingController();
   String qrCodeResult = "";
+  String myvalue = "";
+
+  //values object
+  String price_value = "0";
+  String quantity_value = "0";
+  String name_value = "";
+  bool _isLoading = false;
 
   Future<List> senddata() async {
     var response = await http.post("bad-event.com/caisse/produit.php", body: {
@@ -50,100 +59,204 @@ class _ScanState extends State<Scan> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Container(
-        padding: EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Text(
-              qrCodeResult,
+        child: Container(
+      padding: EdgeInsets.all(20.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Text(
+            qrCodeResult,
+            style: TextStyle(
+              fontSize: 20.0,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(
+            height: 20.0,
+          ),
+          FlatButton(
+            padding: EdgeInsets.all(15.0),
+            onPressed: () async {
+              String codeScanner =
+                  await BarcodeScanner.scan(); //barcode scanner
+              setState(() {
+                qrCodeResult = codeScanner;
+              });
+
+              SizedBox(
+                height: 20,
+              );
+            },
+            child: Text(
+              "Scanner",
               style: TextStyle(
-                fontSize: 20.0,
-              ),
-              textAlign: TextAlign.center,
+                  color: Colors.lightGreen, fontWeight: FontWeight.bold),
             ),
-            SizedBox(
-              height: 20.0,
-            ),
-            FlatButton(
-              padding: EdgeInsets.all(15.0),
-              onPressed: () async {
-                String codeScanner =
-                    await BarcodeScanner.scan(); //barcode scanner
-                setState(() {
-                  qrCodeResult = codeScanner;
-                });
+            shape: RoundedRectangleBorder(
+                side: BorderSide(color: Colors.yellow, width: 3.0),
+                borderRadius: BorderRadius.circular(20.0)),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          _image == null ? Text('') : Image.file(_image),
+          // FlatButton(
+          //   onPressed: getImage,
+          //   child: Icon(Icons.add_a_photo),
+          // ),
+          FlatButton(
+            child: Icon(Icons.add_a_photo),
+            padding: EdgeInsets.all(15.0),
+            onPressed: () async {
+              setState(() {
+                senddata();
+              });
 
-                SizedBox(
-                  height: 20,
-                );
-              },
-              child: Text(
-                "Scanner",
-                style: TextStyle(
-                    color: Colors.lightGreen, fontWeight: FontWeight.bold),
-              ),
-              shape: RoundedRectangleBorder(
-                  side: BorderSide(color: Colors.yellow, width: 3.0),
-                  borderRadius: BorderRadius.circular(20.0)),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            _image == null ? Text('') : Image.file(_image),
-            FlatButton(
-              onPressed: getImage,
-              child: Icon(Icons.add_a_photo),
-            ),
-            FlatButton(
-              padding: EdgeInsets.all(15.0),
-              onPressed: () async {
-                setState(() {
-                  senddata();
-                });
+              SizedBox(
+                height: 20,
+              );
+            },
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          SizedBox(height: 10.0),
 
-                SizedBox(
-                  height: 20,
-                );
+
+
+//------------------QUANTITY-----------------------------------------
+          TextFieldContainer(
+            child: TextField(
+              onChanged: (value) {
+                setState(() {
+                  name_value = value;
+                });
               },
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            SizedBox(height: 10.0),
-            TextFormField(
-              controller: nom,
+              onSubmitted: (value) {
+                setState(() {
+                  name_value = value;
+                });
+              },
+              // cursorColor: kPrimaryColor,
               decoration: InputDecoration(
-                  labelText: 'Nom produit', border: OutlineInputBorder()),
-            ),
-            SizedBox(height: 10.0),
-            TextFormField(
-              controller: quantite,
-              decoration: InputDecoration(
-                  labelText: 'Quantité ', border: OutlineInputBorder()),
-            ),
-            SizedBox(height: 10.0),
-            TextFormField(
-              controller: prix,
-              decoration: InputDecoration(
-                  labelText: 'Prix', border: OutlineInputBorder()),
-            ),
-            SizedBox(height: 10.0),
-            RaisedButton(
-              onPressed: () {},
-              child: Text(
-                'Envoyer',
-                style: TextStyle(
-                    color: Colors.lightGreen, fontWeight: FontWeight.bold),
+                icon: Icon(
+                  Icons.name,
+                  color: kPrimaryColor,
+                ),
+                hintText: "Nom produit",
+                labelText: "Nom produit",
+                border: InputBorder.none,
               ),
-              shape: RoundedRectangleBorder(
-                  side: BorderSide(color: Colors.yellow, width: 3.0),
-                  borderRadius: BorderRadius.circular(20.0)),
             ),
+          ),
+          // TextFormField(
+          //   controller: nom,
+          //   decoration: InputDecoration(
+          //       labelText: 'Nom produit', border: OutlineInputBorder()),
+          // ),
+          SizedBox(height: 10.0),
+
+//------------------QUANTITY-----------------------------------------
+          TextFieldContainer(
+            child: TextField(
+              onChanged: (value) {
+                setState(() {
+                  quantity_value = value;
+                });
+              },
+              onSubmitted: (value) {
+                setState(() {
+                  quantity_value = value;
+                });
+              },
+              // cursorColor: kPrimaryColor,
+              decoration: InputDecoration(
+                icon: Icon(
+                  Icons.shopping_basket,
+                  color: kPrimaryColor,
+                ),
+                hintText: "Quantité",
+                labelText: "Quantité",
+                border: InputBorder.none,
+              ),
+            ),
+          ),
+
+          // TextFormField(
+          //   controller: quantite,
+          //   decoration: InputDecoration(
+          //       labelText: 'Quantité ', border: OutlineInputBorder()),
+          // ),
+          SizedBox(height: 10.0),
+
+//------------------PRICE-----------------------------------------
+          TextFieldContainer(
+            child: TextField(
+              onChanged: (value) {
+                setState(() {
+                  price_value = value;
+                });
+              },
+              onSubmitted: (value) {
+                setState(() {
+                  price_value = value;
+                });
+              },
+              // cursorColor: kPrimaryColor,
+              decoration: InputDecoration(
+                icon: Icon(
+                  Icons.money_sharp,
+                  color: kPrimaryColor,
+                ),
+                hintText: "Prix",
+                labelText: "Prix",
+                border: InputBorder.none,
+              ),
+            ),
+          ),
+
+          // TextFormField(
+          //   controller: prix,
+          //   decoration: InputDecoration(
+          //       labelText: 'Prix', border: OutlineInputBorder()),
+          // ),
+          SizedBox(height: 10.0),
+
+//----------------------LE BOUTON POUR ENVOYER LES DONNEES -------------------------------
+
+          _isLoading
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : new RoundedButton(
+                    text: "Envoyer",
+                    press: () {
+                      print('Envoyer');
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) {
+                      //       return ();
+                      //     },
+                      //   ),
+                      // );
+                    },
+                  ),
           ],
-        ),
+          // RaisedButton(
+          //   onPressed: () {},
+          //   child: Text(
+          //     'Envoyer',
+          //     style: TextStyle(
+          //         color: Colors.lightGreen, fontWeight: FontWeight.bold),
+          //   ),
+          //   shape: RoundedRectangleBorder(
+          //       side: BorderSide(color: Colors.yellow, width: 3.0),
+          //       borderRadius: BorderRadius.circular(20.0)),
+          // ),
+        ],
       ),
-    );
+    ));
   }
 }
