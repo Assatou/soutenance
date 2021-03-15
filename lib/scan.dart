@@ -101,7 +101,7 @@ class _ScanState extends State<Scan> {
                 onTap: () async {},
                 child: Container(
                   margin: EdgeInsets.symmetric(horizontal: 5),
-                  padding: EdgeInsets.all(10),
+                  padding: EdgeInsets.all(15),
                   decoration: BoxDecoration(
                     border: Border.all(
                       width: 2,
@@ -129,18 +129,15 @@ class _ScanState extends State<Scan> {
           //   padding: EdgeInsets.all(15.0),
           //   onPressed: () async {
           //     setState(() {
-          //       senddata();
           //     });
           //     SizedBox(
           //       height: 20,
           //     );
           //   },
           // ),
-          // SizedBox(
-          //   height: 20,
-          // ),
-
-          SizedBox(height: 10.0),
+          SizedBox(
+            height: 20,
+          ),
 
 //-----------------L'ID DU PRODUIT RECUPERER A PARTIR DU CODE QR ------------------------------
           Text(
@@ -149,6 +146,10 @@ class _ScanState extends State<Scan> {
               fontSize: 20.0,
             ),
             textAlign: TextAlign.center,
+          ),
+
+          SizedBox(
+            height: 20,
           ),
 
 //------------------QUANTITY-----------------------------------------
