@@ -94,7 +94,7 @@ class _ScanState extends State<Scan> {
                 ),
               ),
               GestureDetector(
-                onTap: () async {},
+                onTap: getImage,
                 child: Container(
                   margin: EdgeInsets.symmetric(horizontal: 5),
                   padding: EdgeInsets.all(15),
@@ -105,7 +105,7 @@ class _ScanState extends State<Scan> {
                     ),
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(Icons.scanner),
+                  child: Icon(Icons.image),
                 ),
               ),
             ],
