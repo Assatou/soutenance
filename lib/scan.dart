@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:barcode_scan/barcode_scan.dart';
+import 'package:caisse/components/utils/rounded_button.dart';
 import 'package:caisse/components/utils/text_field_container.dart';
 import 'package:caisse/constants.dart';
 import 'package:flutter/material.dart';
@@ -65,6 +66,83 @@ class _ScanState extends State<Scan> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
+          SizedBox(
+            height: 20.0,
+          ),
+//----------------SCANNER--------------------------
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              GestureDetector(
+                onTap: () async {
+                  String codeScanner =
+                      await BarcodeScanner.scan(); //barcode scanner
+                  setState(() {
+                    qrCodeResult = codeScanner;
+                  });
+                  SizedBox(
+                    height: 40,
+                  );
+                },
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 5),
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 2,
+                      color: kPrimaryLightColor,
+                    ),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(Icons.scanner),
+                ),
+              ),
+              GestureDetector(
+                onTap: () async {},
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 5),
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 2,
+                      color: kPrimaryLightColor,
+                    ),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(Icons.scanner),
+                ),
+              ),
+            ],
+          ),
+
+          SizedBox(
+            height: 20,
+          ),
+          _image == null ? Text('') : Image.file(_image),
+
+          // // FlatButton(
+          // //   onPressed: getImage,
+          // //   child: Icon(Icons.add_a_photo),
+          // // ),
+          // FlatButton(
+          //   child: Icon(Icons.add_a_photo),
+          //   padding: EdgeInsets.all(15.0),
+          //   onPressed: () async {
+          //     setState(() {
+          //       senddata();
+          //     });
+          //     SizedBox(
+          //       height: 20,
+          //     );
+          //   },
+          // ),
+          // SizedBox(
+          //   height: 20,
+          // ),
+
+          SizedBox(height: 10.0),
+
+//-----------------L'ID DU PRODUIT RECUPERER A PARTIR DU CODE QR ------------------------------
           Text(
             qrCodeResult,
             style: TextStyle(
@@ -72,58 +150,6 @@ class _ScanState extends State<Scan> {
             ),
             textAlign: TextAlign.center,
           ),
-          SizedBox(
-            height: 20.0,
-          ),
-          FlatButton(
-            padding: EdgeInsets.all(15.0),
-            onPressed: () async {
-              String codeScanner =
-                  await BarcodeScanner.scan(); //barcode scanner
-              setState(() {
-                qrCodeResult = codeScanner;
-              });
-
-              SizedBox(
-                height: 20,
-              );
-            },
-            child: Text(
-              "Scanner",
-              style: TextStyle(
-                  color: Colors.lightGreen, fontWeight: FontWeight.bold),
-            ),
-            shape: RoundedRectangleBorder(
-                side: BorderSide(color: Colors.yellow, width: 3.0),
-                borderRadius: BorderRadius.circular(20.0)),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          _image == null ? Text('') : Image.file(_image),
-          // FlatButton(
-          //   onPressed: getImage,
-          //   child: Icon(Icons.add_a_photo),
-          // ),
-          FlatButton(
-            child: Icon(Icons.add_a_photo),
-            padding: EdgeInsets.all(15.0),
-            onPressed: () async {
-              setState(() {
-                senddata();
-              });
-
-              SizedBox(
-                height: 20,
-              );
-            },
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          SizedBox(height: 10.0),
-
-
 
 //------------------QUANTITY-----------------------------------------
           TextFieldContainer(
@@ -141,7 +167,7 @@ class _ScanState extends State<Scan> {
               // cursorColor: kPrimaryColor,
               decoration: InputDecoration(
                 icon: Icon(
-                  Icons.name,
+                  Icons.preview_outlined,
                   color: kPrimaryColor,
                 ),
                 hintText: "Nom produit",
@@ -152,7 +178,7 @@ class _ScanState extends State<Scan> {
           ),
           // TextFormField(
           //   controller: nom,
-          //   decoration: InputDecoration(
+          //   decoration: InputDecorationgit(
           //       labelText: 'Nom produit', border: OutlineInputBorder()),
           // ),
           SizedBox(height: 10.0),
@@ -226,24 +252,18 @@ class _ScanState extends State<Scan> {
 //----------------------LE BOUTON POUR ENVOYER LES DONNEES -------------------------------
 
           _isLoading
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : new RoundedButton(
-                    text: "Envoyer",
-                    press: () {
-                      print('Envoyer');
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) {
-                      //       return ();
-                      //     },
-                      //   ),
-                      // );
-                    },
-                  ),
-          ],
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : new RoundedButton(
+                  text: "Envoyer",
+                  press: () {
+                    print('Envoyer');
+
+//----------------------APPELER L'API--------------------------------
+                    senddata();
+                  },
+                ),
           // RaisedButton(
           //   onPressed: () {},
           //   child: Text(
