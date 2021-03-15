@@ -1,3 +1,6 @@
+import 'package:caisse/produit.dart';
+import 'package:caisse/scan.dart';
+import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:flutter/material.dart';
 
 class Firstroute extends StatelessWidget {
@@ -12,11 +15,42 @@ class Firstroute extends StatelessWidget {
       body: Center(
           child: Column(
         children: <Widget>[
-          RaisedButton(onPressed: null, child: Text('Scanner')),
           RaisedButton(
-            onPressed: null,
-            child: Text('voir mon stock'),
-          )
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) {
+                  return Scan();
+                }),
+              );
+            },
+            child: Text(
+              'Scanner',
+              style: new TextStyle(
+                  color: Colors.lightGreen, fontWeight: FontWeight.bold),
+            ),
+            shape: RoundedRectangleBorder(
+                side: BorderSide(color: Colors.yellow, width: 3.0),
+                borderRadius: BorderRadius.circular(20.0)),
+          ),
+          RaisedButton(
+            child: Text(
+              'voir mon stock',
+              style: new TextStyle(
+                  color: Colors.lightGreen, fontWeight: FontWeight.bold),
+            ),
+            shape: RoundedRectangleBorder(
+                side: BorderSide(color: Colors.yellow, width: 3.0),
+                borderRadius: BorderRadius.circular(20.0)),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) {
+                  return prod();
+                }),
+              );
+            },
+          ),
         ],
       )),
       drawer: Drawer(
@@ -28,27 +62,39 @@ class Firstroute extends StatelessWidget {
 
           children: <Widget>[
             DrawerHeader(
-              child: Text('Drawer Header'),
+              child: CircularProfileAvatar(
+                null,
+                child: Image.asset('caisse.png'),
+                borderWidth: 1,
+                elevation: 1,
+                radius: 150,
+              ),
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: Colors.lightGreen,
               ),
             ),
             ListTile(
-              title: Text('Item 1'),
+              leading: Icon(Icons.web),
+              title: Text('Site Web'),
               onTap: () {
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) {
+                    return Scan();
+                  }),
+                );
               },
             ),
             ListTile(
-              title: Text('Item 2'),
+              leading: Icon(Icons.settings),
+              title: Text('Profil'),
               onTap: () {
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) {
+                    return Scan();
+                  }),
+                );
               },
             ),
           ],

@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:caisse/home.dart';
-import 'package:caisse/scan.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,7 +12,7 @@ void main() {
     home: Scaffold(
       resizeToAvoidBottomPadding: false,
       body: SafeArea(
-        child: Scan(),
+        child: Firstroute(),
       ),
     ),
   ));

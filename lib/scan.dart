@@ -49,100 +49,92 @@ class _ScanState extends State<Scan> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
+    return Scaffold(
+      appBar: AppBar(title: Text('Ajouter un produit')),
+      body: ListView(
         padding: EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Text(
-              qrCodeResult,
+        children: <Widget>[
+          Text(
+            qrCodeResult,
+            style: TextStyle(
+              fontSize: 20.0,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(
+            height: 20.0,
+          ),
+          FlatButton(
+            padding: EdgeInsets.all(15.0),
+            onPressed: () async {
+              String codeScanner =
+                  await BarcodeScanner.scan(); //barcode scanner
+              setState(() {
+                qrCodeResult = codeScanner;
+              });
+
+              SizedBox(
+                height: 20,
+              );
+            },
+            child: Text(
+              "Scanner",
               style: TextStyle(
-                fontSize: 20.0,
-              ),
-              textAlign: TextAlign.center,
+                  color: Colors.lightGreen, fontWeight: FontWeight.bold),
             ),
-            SizedBox(
-              height: 20.0,
+            shape: RoundedRectangleBorder(
+                side: BorderSide(color: Colors.yellow, width: 3.0),
+                borderRadius: BorderRadius.circular(20.0)),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          _image == null ? Text('') : Image.file(_image),
+          FlatButton(
+            onPressed: getImage,
+            child: Icon(Icons.add_a_photo),
+          ),
+          FlatButton(
+            padding: EdgeInsets.all(15.0),
+            onPressed: () async {
+              setState(() {
+                senddata();
+              });
+            },
+          ),
+          TextFormField(
+            autofocus: true,
+            controller: nom,
+            decoration: InputDecoration(
+                labelText: 'Nom produit', border: OutlineInputBorder()),
+          ),
+          SizedBox(height: 10.0),
+          TextFormField(
+            controller: quantite,
+            decoration: InputDecoration(
+                labelText: 'Quantité ', border: OutlineInputBorder()),
+          ),
+          SizedBox(height: 10.0),
+          TextFormField(
+            controller: prix,
+            decoration: InputDecoration(
+                labelText: 'Prix', border: OutlineInputBorder()),
+          ),
+          SizedBox(height: 10.0),
+          RaisedButton(
+            onPressed: () {},
+            child: Text(
+              'Envoyer',
+              style: TextStyle(
+                  color: Colors.lightGreen, fontWeight: FontWeight.bold),
             ),
-            FlatButton(
-              padding: EdgeInsets.all(15.0),
-              onPressed: () async {
-                String codeScanner =
-                    await BarcodeScanner.scan(); //barcode scanner
-                setState(() {
-                  qrCodeResult = codeScanner;
-                });
-
-                SizedBox(
-                  height: 20,
-                );
-              },
-              child: Text(
-                "Scanner",
-                style: TextStyle(
-                    color: Colors.lightGreen, fontWeight: FontWeight.bold),
-              ),
-              shape: RoundedRectangleBorder(
-                  side: BorderSide(color: Colors.yellow, width: 3.0),
-                  borderRadius: BorderRadius.circular(20.0)),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            _image == null ? Text('') : Image.file(_image),
-            FlatButton(
-              onPressed: getImage,
-              child: Icon(Icons.add_a_photo),
-            ),
-            FlatButton(
-              padding: EdgeInsets.all(15.0),
-              onPressed: () async {
-                setState(() {
-                  senddata();
-                });
-
-                SizedBox(
-                  height: 20,
-                );
-              },
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            SizedBox(height: 10.0),
-            TextFormField(
-              controller: nom,
-              decoration: InputDecoration(
-                  labelText: 'Nom produit', border: OutlineInputBorder()),
-            ),
-            SizedBox(height: 10.0),
-            TextFormField(
-              controller: quantite,
-              decoration: InputDecoration(
-                  labelText: 'Quantité ', border: OutlineInputBorder()),
-            ),
-            SizedBox(height: 10.0),
-            TextFormField(
-              controller: prix,
-              decoration: InputDecoration(
-                  labelText: 'Prix', border: OutlineInputBorder()),
-            ),
-            SizedBox(height: 10.0),
-            RaisedButton(
-              onPressed: () {},
-              child: Text(
-                'Envoyer',
-                style: TextStyle(
-                    color: Colors.lightGreen, fontWeight: FontWeight.bold),
-              ),
-              shape: RoundedRectangleBorder(
-                  side: BorderSide(color: Colors.yellow, width: 3.0),
-                  borderRadius: BorderRadius.circular(20.0)),
-            ),
-          ],
-        ),
+            shape: RoundedRectangleBorder(
+                side: BorderSide(color: Colors.yellow, width: 3.0),
+                borderRadius: BorderRadius.circular(20.0)),
+          ),
+          SizedBox(height: 10.0),
+          SizedBox(height: 10.0),
+        ],
       ),
     );
   }
